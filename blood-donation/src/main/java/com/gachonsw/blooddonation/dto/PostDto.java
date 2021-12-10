@@ -15,7 +15,9 @@ public class PostDto {
 
     private Long id;
     private Long userId;
-//    private User user;
+//    private Long associationId;
+
+    //    private User user;
     private String title;
     private String content;
     private Boolean isActive;
