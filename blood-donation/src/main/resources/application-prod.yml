@@ -1,3 +1,6 @@
+server:
+  port: 5000
+
 spring:
   profiles: prod
   datasource:
@@ -30,7 +33,7 @@ logging.level:
 cloud:
   aws:
     s3:
-      bucket: elasticbeanstalk-ap-northeast-2-081654662783
+      bucket: elasticbeanstalk-ap-northeast-2-586071136953
     region:
       static: ap-northeast-2
     stack:
