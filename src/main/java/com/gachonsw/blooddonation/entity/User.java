@@ -46,6 +46,7 @@ public class User extends BaseTimeEntity {
     @Builder.Default
     private Boolean isDormant = Boolean.FALSE;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserAuthority> userAuthorityList = new ArrayList<>();
 
