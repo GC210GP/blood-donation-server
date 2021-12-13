@@ -1,14 +1,21 @@
 package com.gachonsw.blooddonation.controller;
 
 import com.gachonsw.blooddonation.dto.*;
+import com.gachonsw.blooddonation.entity.SnsType;
 import com.gachonsw.blooddonation.entity.User;
+import com.gachonsw.blooddonation.entity.UserSns;
+import com.gachonsw.blooddonation.repository.UserSnsRepository;
 import com.gachonsw.blooddonation.service.UserService;
+import com.gachonsw.blooddonation.service.UserSnsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class UserController {
 
     private final UserService userService;
+    private final UserSnsService userSnsService;
 
     @GetMapping
     public ResponseEntity<Result<UserResponseDto>> getUser(@RequestParam Long userId) {
@@ -57,5 +65,29 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/sns")
+    public ResponseEntity<?> createUserSns(@RequestBody CreateSnsDto createSnsDto) {
+        userSnsService.createUserSns(createSnsDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/sns")
+    public Result<UserSnsResponse> getUserSnsList(@RequestParam Long userId) {
+        User user = userService.findById(userId);
+
+        List<UserSns> listByUser = userSnsService.findListByUser(user);
+
+        List<UserSnsResponse> collect = listByUser.stream()
+                .map(UserSnsResponse::new)
+                .collect(Collectors.toList());
+
+        return new Result(collect);
+    }
+
+    @DeleteMapping("/sns/{userSnsId}")
+    public ResponseEntity<?> deleteUserSns(@PathVariable Long userSnsId){
+        userSnsService.deleteUserSns(userSnsId);
+        return ResponseEntity.noContent().build();
+    }
 
 }
