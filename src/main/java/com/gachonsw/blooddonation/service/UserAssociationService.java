@@ -22,7 +22,9 @@ public class UserAssociationService {
 
     private final UserAssociationRepository userAssociationRepository;
     private final AssociationRepository associationRepository;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
+    private final UserService userService;
+
 //    @Transactional
 //    public Long createUserAssociation(CreateUserAssociationDto createUserAssociationDto){
 //        Association.builder()
@@ -37,7 +39,8 @@ public class UserAssociationService {
     //UserAssociation
     @Transactional
     public Long createUserAssociation(UserAssociationDto userAssociationDto){
-        User user = userRepository.findById(userAssociationDto.getUserId()).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 유저입니다."));
+//        User user = userRepository.findById(userAssociationDto.getUserId()).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        User user = userService.findById(userAssociationDto.getUserId());
 
         Optional<Association> associationByName = associationRepository.findByName(userAssociationDto.getAssociationName());
 
@@ -79,7 +82,9 @@ public class UserAssociationService {
     }
 
     public List<UserAssociation> findListByUserId(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 유저입니다."));
+//        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        User user = userService.findById(userId);
+
         return userAssociationRepository.findListByUser(user);
     }
 

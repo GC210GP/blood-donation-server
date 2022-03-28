@@ -20,10 +20,6 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
-    private final PostAssociationService postAssociationService;
-    private final UserAssociationService userAssociationService;
-    private final UserService userService;
-    private final AssociationService associationService;
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, UriComponentsBuilder b) {
