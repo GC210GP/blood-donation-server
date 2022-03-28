@@ -50,6 +50,8 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<UserAuthority> userAuthorityList = new ArrayList<>();
 
+    private String emailValidCode;
+
 
 //    @OneToMany(mappedBy = "user")
 //    private List<UserAuthority> userAuthorityList = new ArrayList<>();
@@ -108,5 +110,15 @@ public class User extends BaseTimeEntity {
          this.isDormant = !this.isDormant;
     }
     public void changePw(String password){this.password = password;}
+    public void changeEmailValidCode(String emailValidCode) {
+        this.emailValidCode = emailValidCode;
+    }
 
+    public void changeIsDormant() {
+        if (isDormant) {
+            this.isDormant = Boolean.FALSE;
+            return;
+        }
+        this.isDormant = Boolean.TRUE;
+    }
 }

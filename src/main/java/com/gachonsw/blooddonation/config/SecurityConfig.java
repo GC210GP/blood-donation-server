@@ -51,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         ,"/favicon.ico"
                         ,"/error"
 
-                        ,"/**"
                 );
     }
 
@@ -80,13 +79,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth").permitAll()
-                .antMatchers("/users").permitAll()
-                .antMatchers("/posts").permitAll()
-                .antMatchers("/associations").permitAll()
-                .antMatchers("/recommend").permitAll()
-                .antMatchers("/health").permitAll()
+                .antMatchers("/auth/**").permitAll()
 
+                .antMatchers("/users/validate-duplicate").permitAll()
+                .antMatchers("/users/lost-pw").permitAll()
+
+                .antMatchers("/files/upload").permitAll()
+
+                .antMatchers("/health").permitAll()
+                .antMatchers("/test").permitAll()
 
                 .anyRequest().authenticated()
 

@@ -7,6 +7,7 @@ import com.gachonsw.blooddonation.entity.UserSns;
 import com.gachonsw.blooddonation.repository.UserSnsRepository;
 import com.gachonsw.blooddonation.service.UserService;
 import com.gachonsw.blooddonation.service.UserSnsService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,29 +35,29 @@ public class UserController {
         return ResponseEntity.ok(new Result<>(userResponseDto));
     }
 
-    @PostMapping
-    public ResponseEntity<Result<UserResponseDto>> createUser(@RequestBody CreateUserDto createUserDto, UriComponentsBuilder b) {
-        User user = createUserDto.toEntity(createUserDto);
-        Long userId = userService.createUser(user);
+//    @PostMapping
+//    public ResponseEntity<Result<UserResponseDto>> createUser(@RequestBody CreateUserDto createUserDto, UriComponentsBuilder b) {
+//        User user = createUserDto.toEntity(createUserDto);
+//        Long userId = userService.createUser(user);
+//
+//        UriComponents uriComponents =
+//                b.path("/users/{userId}").buildAndExpand(userId);
+//
+//        Result<UserResponseDto> result = new Result<>(new UserResponseDto(user));
+//        return ResponseEntity.created(uriComponents.toUri()).body(result);
+//    }
 
-        UriComponents uriComponents =
-                b.path("/users/{userId}").buildAndExpand(userId);
+    @GetMapping("/current")
+    public ResponseEntity<Result<UserResponseDto>> getCurrentUserInfo() {
+        User user = userService.findUserFromToken();
+        UserResponseDto userResponseDto = new UserResponseDto(user);
 
-        Result<UserResponseDto> result = new Result<>(new UserResponseDto(user));
-        return ResponseEntity.created(uriComponents.toUri()).body(result);
+        return ResponseEntity.ok(new Result<>(userResponseDto));
     }
-
 
     @PatchMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody UserUpdateDto userUpdateDto) {
         userService.updateUser(userId, userUpdateDto);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{userId}/change-user-dormant")
-    public ResponseEntity<?> changeDormant(@PathVariable Long userId) {
-        userService.changeDormant(userId);
 
         return ResponseEntity.noContent().build();
     }
@@ -82,5 +83,54 @@ public class UserController {
     public ResponseEntity<?> deleteUserSns(@PathVariable Long userSnsId){
         userSnsService.deleteUserSns(userSnsId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{userId}/change-dormant")
+    public ResponseEntity<?> changeUserDormant(@PathVariable Long userId) {
+        User user = userService.findById(userId);
+        userService.changeDormant(user);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/validate-duplicate")
+    public ResponseEntity<?> validateDuplicate(@RequestBody UserValidationDto userValidationDto) {
+        userService.validateDuplicateUser(userValidationDto.getEmail());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/lost-pw")
+    public ResponseEntity<?> lostPassword(@RequestParam String userEmail) {
+        userService.lostPassword(userEmail);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/change-pw")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePwDto changePwDto) {
+        userService.changePassword(changePwDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/validate-email")
+    public ResponseEntity<?> validateEmail() {
+        userService.validateEmail();
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/validate-email-send-code")
+    public ResponseEntity<?> validateEmailSendCode(@RequestParam String emailCode) {
+        userService.validateEmailSendCode(emailCode);
+        return ResponseEntity.noContent().build();
+    }
+
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+//        User user = userService.findUser(id);
+//    }
+
+    @Data
+    static class UserValidationDto {
+        String email;
     }
 }
