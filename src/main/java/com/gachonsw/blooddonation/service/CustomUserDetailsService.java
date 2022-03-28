@@ -33,9 +33,9 @@ public class CustomUserDetailsService implements UserDetailsService {
    }
 
    private org.springframework.security.core.userdetails.User createUser(String email, User user) {
-      if (user.getIsDormant()) {
-         throw new RuntimeException(email + " -> 활성화되어 있지 않습니다.");
-      }
+//      if (user.getIsDormant()) {
+//         throw new RuntimeException(email + " -> 활성화되어 있지 않습니다.");
+//      }
       List<GrantedAuthority> grantedAuthorities = user.getUserAuthorityList().stream()
               .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getAuthorityName()))
               .collect(Collectors.toList());

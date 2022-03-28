@@ -37,22 +37,18 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Result<UserResponseDto>> createUser(@RequestBody CreateUserDto createUserDto, UriComponentsBuilder b) {
         User user = createUserDto.toEntity(createUserDto);
-//        User user = createUserDto.toEntityExceptPw(createUserDto);
         Long userId = userService.createUser(user);
 
         UriComponents uriComponents =
                 b.path("/users/{userId}").buildAndExpand(userId);
 
-        UserResponseDto userResponseDto = new UserResponseDto(user);
-        Result<UserResponseDto> result = new Result<>(userResponseDto);
-
+        Result<UserResponseDto> result = new Result<>(new UserResponseDto(user));
         return ResponseEntity.created(uriComponents.toUri()).body(result);
     }
 
 
     @PatchMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody UserUpdateDto userUpdateDto) {
-        User user = userService.findById(userId);
         userService.updateUser(userId, userUpdateDto);
 
         return ResponseEntity.noContent().build();
@@ -72,16 +68,14 @@ public class UserController {
     }
 
     @GetMapping("/sns")
-    public Result<UserSnsResponse> getUserSnsList(@RequestParam Long userId) {
-        User user = userService.findById(userId);
-
-        List<UserSns> listByUser = userSnsService.findListByUser(user);
+    public Result<List<UserSnsResponse>> getUserSnsList(@RequestParam Long userId) {
+        List<UserSns> listByUser = userSnsService.findListByUser(userId);
 
         List<UserSnsResponse> collect = listByUser.stream()
                 .map(UserSnsResponse::new)
                 .collect(Collectors.toList());
 
-        return new Result(collect);
+        return new Result<>(collect);
     }
 
     @DeleteMapping("/sns/{userSnsId}")
@@ -89,5 +83,4 @@ public class UserController {
         userSnsService.deleteUserSns(userSnsId);
         return ResponseEntity.noContent().build();
     }
-
 }

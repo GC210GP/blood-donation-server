@@ -35,7 +35,7 @@ public class PostAssociationService {
     }
 
     @Transactional
-    public void deletePostAssociations(Long postId){
+    public void deletePostAssociationsByPostId(Long postId){
         Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 포스트입니다."));
         postAssociationRepository.deleteAllByPost(post);
     }

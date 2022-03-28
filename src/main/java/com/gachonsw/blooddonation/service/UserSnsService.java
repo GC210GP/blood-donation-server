@@ -37,7 +37,8 @@ public class UserSnsService {
         return save.getId();
     }
 
-    public List<UserSns> findListByUser(User user){
+    public List<UserSns> findListByUser(Long userId){
+        User user = userService.findById(userId);
         return userSnsRepository.findListByUser(user);
     }
 

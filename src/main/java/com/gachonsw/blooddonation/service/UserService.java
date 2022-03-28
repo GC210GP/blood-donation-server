@@ -7,6 +7,7 @@ import com.gachonsw.blooddonation.entity.UserAuthority;
 import com.gachonsw.blooddonation.repository.AuthorityRepository;
 import com.gachonsw.blooddonation.repository.UserAuthorityRepository;
 import com.gachonsw.blooddonation.repository.UserRepository;
+import com.gachonsw.blooddonation.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,6 @@ public class UserService {
     private final UserAuthorityRepository userAuthorityRepository;
 
     private final PasswordEncoder passwordEncoder;
-
-//    public UserDto getUserWithAuthorities(String email) {
-//        return UserDto.from(userRepository.findWithAuthoritesByEmail(email).orElse(null));
-//    }
-//
-//    public UserDto getMyUserWithAuthorities() {
-//        return UserDto.from(SecurityUtil.getCurrentUsername().flatMap(userRepository::findWithAuthoritesByEmail).orElse(null));
-//    }
 
     @Transactional
     public Long createUser(User user) {
@@ -78,8 +71,8 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long id, UserUpdateDto userUpdateDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+    public void updateUser(Long userId, UserUpdateDto userUpdateDto) {
+        User user = findById(userId);
         if (!userUpdateDto.getEmail().equals(user.getEmail()))
             validateDuplicateUser(userUpdateDto.getEmail());
 
@@ -90,16 +83,20 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
-
+    public void deleteUser(Long userId) {
+        User user = findById(userId);
         userRepository.delete(user);
     }
 
     @Transactional
     public void changeDormant(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        User user = findById(userId);
         user.changeDormant();
+    }
+
+    public User findUserFromToken(){
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+        return findById(currentUserId);
     }
 
 }

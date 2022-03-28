@@ -4,7 +4,6 @@ import com.gachonsw.blooddonation.dto.PostDto;
 import com.gachonsw.blooddonation.entity.Post;
 import com.gachonsw.blooddonation.entity.User;
 import com.gachonsw.blooddonation.repository.PostRepository;
-import com.gachonsw.blooddonation.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +18,18 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+    private final PostAssociationService postAssoService;
+    private final AssociationService associationService;
 
     @Transactional
     public Long createPost(PostDto postDto){
         User user = userService.findById(postDto.getUserId());
         Post post = postDto.toEntityExceptUser(postDto);
         post.changeUser(user);
-
         postRepository.save(post);
+
+        postAssoService.createPostAssociations(postDto,post.getId());
+
         return post.getId();
     }
 
@@ -37,13 +40,13 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(Long id){
-        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 포스트입니다."));
-
-        postRepository.deleteById(id);
+    public void deletePostAndRelated(Long postId){
+        Post post = findById(postId);
+        postAssoService.deletePostAssociationsByPostId(postId);
+        postRepository.delete(post);
     }
 
-    public Post findPost(Long id){
+    public Post findById(Long id){
         return postRepository.findById(id).orElseThrow(()->  new EntityNotFoundException("존재하지 않는 포스트입니다."));
     }
 
@@ -53,4 +56,9 @@ public class PostService {
     }
 
 
+//    public void getPostsByAssociation(Long associationId) {
+//
+//        Association association = associationService.findById(associationId);
+//        List<PostAssociation> listByAssociation = postAssoService.findListByAssociation(association);
+//    }
 }
