@@ -5,7 +5,5 @@ import lombok.Data;
 
 @Data
 public class CreateUserAssociationDto {
-
-    private String associationName;
-    private Long userId;
+    private Long associationId;
 }
