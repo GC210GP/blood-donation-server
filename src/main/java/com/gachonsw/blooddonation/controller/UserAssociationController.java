@@ -56,10 +56,4 @@ public class UserAssociationController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PatchMapping("/{postId}")
-//    public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostDto postDto) {
-//        postService.updatePost(postId, postDto);
-//        return ResponseEntity.noContent().build();
-//    }
-
 }
