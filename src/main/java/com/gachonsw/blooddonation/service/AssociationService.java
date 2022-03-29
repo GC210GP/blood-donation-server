@@ -32,7 +32,7 @@ public class AssociationService {
     }
 
     //쿼리 포함하는 문자열 기준
-    public List<Association> searchAssociation(String query){
+    public List<Association> searchAssociationNameLike(String query){
         return associationRepository.findByNameContaining(query);
     }
 
