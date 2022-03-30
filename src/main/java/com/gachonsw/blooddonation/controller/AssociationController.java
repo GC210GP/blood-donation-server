@@ -38,7 +38,7 @@ public class AssociationController {
         return ResponseEntity.created(uriComponents.toUri()).body(result);
     }
 
-    @GetMapping
+    @GetMapping("/search-name")
     public Result<List<AssociationResponseDto>> searchAssociationNameLike(@RequestParam String query){
         List<AssociationResponseDto> result = associationService.searchAssociationNameLike(query).stream()
                 .map(AssociationResponseDto::new)

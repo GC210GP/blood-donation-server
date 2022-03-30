@@ -59,9 +59,9 @@ public class UserAssociationService {
 //
 //    }
 
-    public List<UserAssociation> findListByUser(){
+    public List<UserAssociation> findListWithAssociationByUser(){
         User user = userService.findUserFromToken();
-        return userAssociationRepository.findListByUser(user);
+        return userAssociationRepository.findListWithAssociationByUser(user);
     }
 
     @Transactional

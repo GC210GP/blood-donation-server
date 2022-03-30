@@ -1,14 +1,13 @@
 package com.gachonsw.blooddonation.service;
 
-import com.gachonsw.blooddonation.dto.PostDto;
 import com.gachonsw.blooddonation.entity.*;
 import com.gachonsw.blooddonation.repository.PostAssociationRepository;
-import com.gachonsw.blooddonation.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -17,13 +16,12 @@ import java.util.List;
 public class PostAssociationService {
 
     private final PostAssociationRepository postAssociationRepository;
-    private final PostRepository postRepository;
+
     private final UserAssociationService userAssociationService;
 
     @Transactional
-    public void createPostAssociations(PostDto postDto, Long postId){
-        List<UserAssociation> listByUserId = userAssociationService.findListByUserId(postDto.getUserId());
-        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 포스트입니다."));
+    public void createPostAssociations(Post post){
+        List<UserAssociation> listByUserId = userAssociationService.findListWithAssociationByUser();
 
         for (UserAssociation ua : listByUserId) {
             PostAssociation postAssociation = PostAssociation.builder()
@@ -35,12 +33,15 @@ public class PostAssociationService {
     }
 
     @Transactional
-    public void deletePostAssociationsByPostId(Long postId){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 포스트입니다."));
+    public void deleteAllByPost(Post post){
         postAssociationRepository.deleteAllByPost(post);
     }
 
     public List<PostAssociation> findListByAssociation(Association association){
-        return postAssociationRepository.findByAssociation(association);
+        return postAssociationRepository.findWithPostByAssociation(association);
+    }
+
+    public Slice<PostAssociation> findSliceWithPostByAssociation(Association association, Pageable pageable){
+        return postAssociationRepository.findSliceWithPostByAssociation(association, pageable);
     }
 }

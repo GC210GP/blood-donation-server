@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserAssociationRepository extends JpaRepository<UserAssociation, Long> {
 
     @EntityGraph(attributePaths = "association")
-    List<UserAssociation> findListByUser(User user);
+    List<UserAssociation> findListWithAssociationByUser(User user);
 
     @EntityGraph(attributePaths = "association")
     Optional<UserAssociation> findWithAssociationById(Long id);
