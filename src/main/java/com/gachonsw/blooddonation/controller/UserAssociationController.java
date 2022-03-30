@@ -1,6 +1,5 @@
 package com.gachonsw.blooddonation.controller;
 
-import com.gachonsw.blooddonation.dto.AssociationResponseDto;
 import com.gachonsw.blooddonation.dto.CreateUserAssociationDto;
 import com.gachonsw.blooddonation.dto.Result;
 import com.gachonsw.blooddonation.dto.UserAssociationDto;
@@ -36,7 +35,7 @@ public class UserAssociationController {
 //    }
     @GetMapping
     public Result<List<UserAssociationDto>> getUserAssociations() {
-        List<UserAssociationDto> res = userAssociationService.findListByUser().stream()
+        List<UserAssociationDto> res = userAssociationService.findListWithAssociationByUser().stream()
                 .map(UserAssociationDto::new)
                 .collect(Collectors.toList());
 

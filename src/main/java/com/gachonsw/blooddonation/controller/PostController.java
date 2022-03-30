@@ -1,18 +1,18 @@
 package com.gachonsw.blooddonation.controller;
 
-import com.gachonsw.blooddonation.dto.PostAssociationResponseDto;
-import com.gachonsw.blooddonation.dto.PostDto;
+import com.gachonsw.blooddonation.dto.PostResponseDto;
+import com.gachonsw.blooddonation.dto.PostRequestDto;
 import com.gachonsw.blooddonation.dto.Result;
 import com.gachonsw.blooddonation.entity.*;
 import com.gachonsw.blooddonation.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,22 +22,20 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, UriComponentsBuilder b) {
-        Long postId = postService.createPost(postDto);
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, UriComponentsBuilder b) {
+        Long postId = postService.createPost(postRequestDto);
 
         UriComponents uriComponents =
                 b.path("/posts/{postId}").buildAndExpand(postId);
 
-        postDto.setId(postId);
-        return ResponseEntity.created(uriComponents.toUri()).body(postDto);
+        PostResponseDto res = new PostResponseDto(postService.findById(postId));
+        return ResponseEntity.created(uriComponents.toUri()).body(res);
     }
 
-    @GetMapping
-    public Result<PostDto> getPost(@RequestParam Long postId){
+    @GetMapping("/{postId}")
+    public Result<PostResponseDto> getPost(@PathVariable Long postId){
         Post post = postService.findById(postId);
-
-        PostDto postDto = new PostDto(post);
-        return new Result<>(postDto);
+        return new Result<>(new PostResponseDto(post));
     }
 
     @DeleteMapping("/{postId}")
@@ -47,11 +45,17 @@ public class PostController {
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostDto postDto){
-        postService.updatePost(postId,postDto);
+    public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto){
+        postService.updatePost(postId, postRequestDto);
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public Result<Slice<PostResponseDto>> getPostsByAssociation(@RequestParam Long associationId, Pageable pageable){
+        Slice<PostResponseDto> res = postService.findSliceWithPostByAssociation(associationId, pageable)
+                .map(PostResponseDto::new);
+        return new Result<>(res);
+    }
 
 
 //    //paging
