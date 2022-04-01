@@ -75,4 +75,9 @@ public class PostService {
         Association association = associationService.findById(associationId);
         return postAssoService.findSliceWithPostByAssociation(association, pageable).map(PostAssociation::getPost);
     }
+
+    public List<Post> findListByUser(){
+        User user = userService.findUserFromToken();
+        return postRepository.findListByUser(user);
+    }
 }

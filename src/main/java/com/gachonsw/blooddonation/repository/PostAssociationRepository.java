@@ -17,4 +17,6 @@ public interface PostAssociationRepository extends JpaRepository<PostAssociation
 
     @EntityGraph(attributePaths = "post")
     Slice<PostAssociation> findSliceWithPostByAssociation(Association association, Pageable pageable);
+
+    void deleteByPostAndAssociation(Post post, Association association);
 }

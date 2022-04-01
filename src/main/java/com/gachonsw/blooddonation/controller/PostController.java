@@ -6,13 +6,15 @@ import com.gachonsw.blooddonation.dto.Result;
 import com.gachonsw.blooddonation.entity.*;
 import com.gachonsw.blooddonation.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +38,15 @@ public class PostController {
     public Result<PostResponseDto> getPost(@PathVariable Long postId){
         Post post = postService.findById(postId);
         return new Result<>(new PostResponseDto(post));
+    }
+
+    //Todo 알아보고 수정
+    @GetMapping("/users/{userId}")
+    public Result<List<PostResponseDto>> getUserPostList(@PathVariable Long userId){
+        List<PostResponseDto> res = postService.findListByUser().stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+        return new Result<>(res);
     }
 
     @DeleteMapping("/{postId}")

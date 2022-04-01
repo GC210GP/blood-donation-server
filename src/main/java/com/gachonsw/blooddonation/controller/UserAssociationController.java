@@ -44,7 +44,8 @@ public class UserAssociationController {
 
     @DeleteMapping("/{userAssociationId}")
     public ResponseEntity<?> deleteUserAssociation(@PathVariable Long userAssociationId) {
-        userAssociationService.deleteById(userAssociationId);
+//        userAssociationService.deleteById(userAssociationId);
+        userAssociationService.deleteByIdWithRelated(userAssociationId);
         return ResponseEntity.noContent().build();
     }
 
