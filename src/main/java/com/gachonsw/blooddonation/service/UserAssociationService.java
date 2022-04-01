@@ -33,8 +33,8 @@ public class UserAssociationService {
                 .user(user)
                 .association(association)
                 .build();
-
         UserAssociation result = userAssociationRepository.save(userAssociation);
+
 
         return result.getId();
     }

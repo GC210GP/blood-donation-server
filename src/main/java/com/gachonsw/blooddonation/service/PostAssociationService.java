@@ -17,19 +17,23 @@ public class PostAssociationService {
 
     private final PostAssociationRepository postAssociationRepository;
 
-    private final UserAssociationService userAssociationService;
+//    @Transactional
+//    public void createPostAssociations(Post post){
+//        List<UserAssociation> listByUserId = userAssociationService.findListWithAssociationByUser();
+//
+//        for (UserAssociation ua : listByUserId) {
+//            PostAssociation postAssociation = PostAssociation.builder()
+//                    .post(post)
+//                    .association(ua.getAssociation())
+//                    .build();
+//            postAssociationRepository.save(postAssociation);
+//        }
+//    }
 
     @Transactional
-    public void createPostAssociations(Post post){
-        List<UserAssociation> listByUserId = userAssociationService.findListWithAssociationByUser();
-
-        for (UserAssociation ua : listByUserId) {
-            PostAssociation postAssociation = PostAssociation.builder()
-                    .post(post)
-                    .association(ua.getAssociation())
-                    .build();
-            postAssociationRepository.save(postAssociation);
-        }
+    public Long createPostAssociation(PostAssociation postAssociation){
+        PostAssociation pa = postAssociationRepository.save(postAssociation);
+        return pa.getId();
     }
 
     @Transactional

@@ -1,11 +1,9 @@
 package com.gachonsw.blooddonation.service;
 
 import com.gachonsw.blooddonation.dto.PostRequestDto;
-import com.gachonsw.blooddonation.entity.Association;
-import com.gachonsw.blooddonation.entity.Post;
-import com.gachonsw.blooddonation.entity.PostAssociation;
-import com.gachonsw.blooddonation.entity.User;
+import com.gachonsw.blooddonation.entity.*;
 import com.gachonsw.blooddonation.repository.PostRepository;
+import com.gachonsw.blooddonation.repository.UserAssociationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -21,6 +19,7 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserAssociationRepository userAssociationRepository;
 
     private final UserService userService;
     private final PostAssociationService postAssoService;
@@ -29,14 +28,24 @@ public class PostService {
     @Transactional
     public Long createPost(PostRequestDto postRequestDto){
         Post post = postRequestDto.toEntityExceptUser(postRequestDto);
-
         User user = userService.findUserFromToken();
         post.changeUser(user);
-
         postRepository.save(post);
-        postAssoService.createPostAssociations(post);
+
+        createPostAssociations(post,user);
 
         return post.getId();
+    }
+
+    private void createPostAssociations(Post post, User user) {
+        List<UserAssociation> listByUserId = userAssociationRepository.findListWithAssociationByUser(user);
+        for (UserAssociation ua : listByUserId) {
+            PostAssociation pa = PostAssociation.builder()
+                    .post(post)
+                    .association(ua.getAssociation())
+                    .build();
+            postAssoService.createPostAssociation(pa);
+        }
     }
 
     @Transactional
