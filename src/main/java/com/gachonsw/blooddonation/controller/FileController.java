@@ -20,7 +20,7 @@ public class FileController {
     private final S3Service s3Service;
 
     @PutMapping("/upload")
-    public String upload(@RequestParam("profile-img") MultipartFile multipartFile) throws IOException {
+    public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
         String result = s3Service.upload(multipartFile, "static");
 
         UploadResultDto uploadResultURLDto = new UploadResultDto();
