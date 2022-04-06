@@ -20,7 +20,7 @@ public class FlaskRelayService {
     private final UserService userService;
     private final LikedService likedService;
 
-    private final static String URI = "http://127.0.0.1:5001";
+    private final static String URI = "http://blood-donation-recommend.eba-tu8iiqus.ap-northeast-2.elasticbeanstalk.com";
 
     //1.get방식 요청
 //    public String getRecommend(String userId) {
