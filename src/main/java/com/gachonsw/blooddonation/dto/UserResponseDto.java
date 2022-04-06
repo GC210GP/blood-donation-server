@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,6 +28,7 @@ public class UserResponseDto {
     private Long frequency;
     private Boolean isDonated;
     private Boolean isDormant;
+    private String fbToken;
 
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -54,7 +54,7 @@ public class UserResponseDto {
         this.recency = user.getRecency();
         this.frequency = user.getFrequency();
         this.isDonated = user.getIsDonated();
-
+        this.fbToken = user.getFbToken();
 
 //        this.bloodDonateResponseDto = new BloodDonateResponseDto(user.getBloodDonate());
 

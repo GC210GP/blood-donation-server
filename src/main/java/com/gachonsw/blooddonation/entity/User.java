@@ -52,7 +52,7 @@ public class User extends BaseTimeEntity {
 
     private String emailValidCode;
 
-    private String fbKey;
+    private String fbToken;
 
 
 //    @OneToMany(mappedBy = "user")
@@ -94,6 +94,8 @@ public class User extends BaseTimeEntity {
             this.frequency = userUpdateDto.getFrequency();
         if (userUpdateDto.getIsDonated() != null)
             this.isDonated = userUpdateDto.getIsDonated();
+        if(userUpdateDto.getFbToken()!= null)
+            this.fbToken = userUpdateDto.getFbToken();
 
 //
 //        this.genres.clear();

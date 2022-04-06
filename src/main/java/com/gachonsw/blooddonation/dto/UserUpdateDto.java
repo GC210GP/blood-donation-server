@@ -28,6 +28,7 @@ public class UserUpdateDto {
     private LocalDate recency;
     private Long frequency;
     private Boolean isDonated;
+    private String fbToken;
 
 //    private List<UserAuthority> userAuthorityList  = new ArrayList<>();
 
