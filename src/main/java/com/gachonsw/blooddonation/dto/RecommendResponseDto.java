@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 public class RecommendResponseDto {
 
-    private List<Long> userId = new ArrayList<>();
+    private List<String> result = new ArrayList<>();
 }

@@ -1,7 +1,6 @@
 package com.gachonsw.blooddonation.entity;
 
 import com.gachonsw.blooddonation.dto.PostRequestDto;
-import com.gachonsw.blooddonation.dto.PostResponseDto;
 import com.gachonsw.blooddonation.entity.common.BaseTimeEntity;
 import lombok.*;
 
@@ -24,7 +23,8 @@ public class Post extends BaseTimeEntity {
 
     private String title;
     private String content;
-    private Boolean isActive;
+    private Boolean isActiveGiver;
+    private Boolean isActiveReceiver;
 
     public void changeUser(User user){
         this.user = user;
@@ -38,7 +38,9 @@ public class Post extends BaseTimeEntity {
             this.title = postRequestDto.getTitle();
         if (postRequestDto.getContent() != null)
             this.content = postRequestDto.getContent();
-        if (postRequestDto.getIsActive() != null)
-            this.isActive = postRequestDto.getIsActive();
+        if (postRequestDto.getIsActiveGiver() != null)
+            this.isActiveGiver = postRequestDto.getIsActiveGiver();
+        if (postRequestDto.getIsActiveReceiver() != null)
+            this.isActiveReceiver = postRequestDto.getIsActiveReceiver();
     }
 }

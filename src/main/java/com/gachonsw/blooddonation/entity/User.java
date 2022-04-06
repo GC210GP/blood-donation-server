@@ -52,6 +52,8 @@ public class User extends BaseTimeEntity {
 
     private String emailValidCode;
 
+    private String fbKey;
+
 
 //    @OneToMany(mappedBy = "user")
 //    private List<UserAuthority> userAuthorityList = new ArrayList<>();

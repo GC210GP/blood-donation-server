@@ -15,7 +15,9 @@ public class PostResponseDto {
     private Long id;
     private String title;
     private String content;
-    private Boolean isActive;
+    private Boolean isActiveGiver;
+    private Boolean isActiveReceiver;
+
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -34,7 +36,8 @@ public class PostResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.isActive = post.getIsActive();
+        this.isActiveGiver = post.getIsActiveGiver();
+        this.isActiveReceiver = post.getIsActiveReceiver();
         this.createdDate = post.getCreatedDate();
         this.modifiedDate = post.getModifiedDate();
 

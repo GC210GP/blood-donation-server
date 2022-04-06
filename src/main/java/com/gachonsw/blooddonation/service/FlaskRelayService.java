@@ -20,6 +20,7 @@ public class FlaskRelayService {
     private final UserService userService;
     private final LikedService likedService;
 
+    private final static String URI = "http://127.0.0.1:5001";
 
     //1.get방식 요청
 //    public String getRecommend(String userId) {
@@ -55,7 +56,7 @@ public class FlaskRelayService {
         //http://localhost:9090/api/server/user/{userId}/name/{username}
 
         URI uri = UriComponentsBuilder
-                .fromUriString("http://127.0.0.1:5001")
+                .fromUriString(URI)
                 .path("/recommend")
                 .encode()
                 .build()
@@ -91,7 +92,7 @@ public class FlaskRelayService {
         //http://localhost:9090/api/server/user/{userId}/name/{username}
 
         URI uri = UriComponentsBuilder
-                .fromUriString("http://127.0.0.1:5001")
+                .fromUriString(URI)
                 .path("/recommend/model")
                 .encode()
                 .build()

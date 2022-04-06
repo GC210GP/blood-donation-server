@@ -11,13 +11,15 @@ import lombok.NoArgsConstructor;
 public class PostRequestDto {
     private String title;
     private String content;
-    private Boolean isActive;
+    private Boolean isActiveGiver;
+    private Boolean isActiveReceiver;
 
     public Post toEntityExceptUser(PostRequestDto postRequestDto){
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
-                .isActive(postRequestDto.getIsActive())
+                .isActiveGiver(postRequestDto.getIsActiveGiver())
+                .isActiveReceiver(postRequestDto.getIsActiveReceiver())
                 .build();
     }
 
