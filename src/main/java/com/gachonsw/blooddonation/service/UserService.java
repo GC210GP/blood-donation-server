@@ -96,7 +96,7 @@ public class UserService {
     @Transactional
     public void updateUser(Long userId, UserUpdateDto userUpdateDto) {
         User user = findById(userId);
-        if (!userUpdateDto.getEmail().equals(user.getEmail()))
+        if (userUpdateDto.getEmail() != null && !userUpdateDto.getEmail().equals(user.getEmail()))
             validateDuplicateUser(userUpdateDto.getEmail());
 
         if (userUpdateDto.getPassword() != null)
