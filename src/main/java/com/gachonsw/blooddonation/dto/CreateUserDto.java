@@ -26,6 +26,7 @@ public class CreateUserDto {
     private Long frequency;
     private Boolean isDonated;
     private Boolean isDormant;
+    private String fbToken;
 
 //    private List<UserAssociationDto> userAssociationDtoList;
 
@@ -46,6 +47,7 @@ public class CreateUserDto {
                 .frequency(createUserDto.frequency)
                 .isDonated(createUserDto.isDonated)
                 .isDormant(createUserDto.isDormant)
+                .fbToken((createUserDto.fbToken))
                 .build();
     }
 
