@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MailService {
     private final JavaMailSender mailSender;
-    private static final String FROM_ADDRESS = "ddbloodapp@gmail.com";
+    private static final String FROM_ADDRESS = "doubld.app@gmail.com";
 
     public void lostPw(String userEmail, String randomPw) {
         SimpleMailMessage message = new SimpleMailMessage();
