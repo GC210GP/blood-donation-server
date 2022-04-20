@@ -9,7 +9,7 @@
 
 ### 서버 구조도
 <p align="center">
-  <div align="center"><img src="https://raw.githubusercontent.com/CYC0227/lab/main/images/image.png" width="100%"/></div>
+  <div align="center"><img src="https://raw.githubusercontent.com/CYC0227/lab/main/images/archi_save.drawio.png" width="100%"/></div>
   <br>  
 </p>
 
