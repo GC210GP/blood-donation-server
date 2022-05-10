@@ -36,21 +36,21 @@ public class UserAssociationService {
                 .build();
         UserAssociation result = userAssociationRepository.save(userAssociation);
 
-        createPostAssociations(association, user);
+//        createPostAssociations(association, user);
 
         return result.getId();
     }
 
-    private void createPostAssociations(Association association, User user) {
-        List<Post> postList = postRepository.findListByUser(user);
-        for (Post post : postList){
-            PostAssociation pa = PostAssociation.builder()
-                    .post(post)
-                    .association(association)
-                    .build();
-            postAssociationRepository.save(pa);
-        }
-    }
+//    private void createPostAssociations(Association association, User user) {
+//        List<Post> postList = postRepository.findListByUser(user);
+//        for (Post post : postList){
+//            PostAssociation pa = PostAssociation.builder()
+//                    .post(post)
+//                    .association(association)
+//                    .build();
+//            postAssociationRepository.save(pa);
+//        }
+//    }
 
     public UserAssociation findWithAssociationById(Long userAssociationId){
         return userAssociationRepository.findWithAssociationById(userAssociationId)
@@ -89,6 +89,8 @@ public class UserAssociationService {
         userAssociationRepository.delete(ua);
 
         deletePostAssociations(ua);
+
+
     }
 
     private void deletePostAssociations(UserAssociation ua) {

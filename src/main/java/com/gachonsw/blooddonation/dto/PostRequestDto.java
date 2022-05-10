@@ -14,6 +14,8 @@ public class PostRequestDto {
     private Boolean isActiveGiver;
     private Boolean isActiveReceiver;
 
+    private Long associationId;
+
     public Post toEntityExceptUser(PostRequestDto postRequestDto){
         return Post.builder()
                 .title(postRequestDto.getTitle())

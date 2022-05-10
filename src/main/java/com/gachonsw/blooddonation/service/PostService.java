@@ -32,21 +32,33 @@ public class PostService {
         post.changeUser(user);
         postRepository.save(post);
 
-        createPostAssociations(post,user);
+//        createPostAssociations(post,user);
+        createPostAssociation(post, postRequestDto.getAssociationId());
 
         return post.getId();
     }
 
-    private void createPostAssociations(Post post, User user) {
-        List<UserAssociation> listByUserId = userAssociationRepository.findListWithAssociationByUser(user);
-        for (UserAssociation ua : listByUserId) {
-            PostAssociation pa = PostAssociation.builder()
-                    .post(post)
-                    .association(ua.getAssociation())
-                    .build();
-            postAssoService.createPostAssociation(pa);
-        }
+    private void createPostAssociation(Post post, Long associationId) {
+        Association association = associationService.findById(associationId);
+
+        PostAssociation pa = PostAssociation.builder()
+                .post(post)
+                .association(association)
+                .build();
+
+        postAssoService.createPostAssociation(pa);
     }
+
+//    private void createPostAssociations(Post post, User user) {
+//        List<UserAssociation> listByUserId = userAssociationRepository.findListWithAssociationByUser(user);
+//        for (UserAssociation ua : listByUserId) {
+//            PostAssociation pa = PostAssociation.builder()
+//                    .post(post)
+//                    .association(ua.getAssociation())
+//                    .build();
+//            postAssoService.createPostAssociation(pa);
+//        }
+//    }
 
     @Transactional
     public void updatePost(Long postId, PostRequestDto postRequestDto){
@@ -57,7 +69,8 @@ public class PostService {
     @Transactional
     public void deletePostAndRelated(Long postId){
         Post post = findById(postId);
-        postAssoService.deleteAllByPost(post);
+//        postAssoService.deleteAllByPost(post);
+        postAssoService.deleteByPost(post);
         postRepository.delete(post);
     }
 

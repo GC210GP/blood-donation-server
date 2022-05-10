@@ -19,4 +19,6 @@ public interface PostAssociationRepository extends JpaRepository<PostAssociation
     Slice<PostAssociation> findSliceWithPostByAssociation(Association association, Pageable pageable);
 
     void deleteByPostAndAssociation(Post post, Association association);
+
+    void deleteByPost(Post post);
 }

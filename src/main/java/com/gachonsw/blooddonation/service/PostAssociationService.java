@@ -41,6 +41,11 @@ public class PostAssociationService {
         postAssociationRepository.deleteAllByPost(post);
     }
 
+    @Transactional
+    public void deleteByPost(Post post){
+        postAssociationRepository.deleteByPost(post);
+    }
+
     public List<PostAssociation> findListByAssociation(Association association){
         return postAssociationRepository.findWithPostByAssociation(association);
     }
