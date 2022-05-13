@@ -11,4 +11,6 @@ public interface AssociationRepository extends JpaRepository<Association, Long> 
     Optional<Association> findByName(String name);
 
     List<Association> findByNameContaining(String name);
+
+    boolean existsByName(String associationName);
 }

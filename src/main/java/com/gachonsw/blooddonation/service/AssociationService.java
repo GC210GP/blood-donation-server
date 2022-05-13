@@ -23,12 +23,20 @@ public class AssociationService {
 
     @Transactional
     public Long createAssociation(CreateAssociationDto createAssociationDto){
+        validateDuplicateAssociation(createAssociationDto);
+
         Association association = Association.builder()
                 .name(createAssociationDto.getAssociationName())
                 .build();
         associationRepository.save(association);
 
         return association.getId();
+    }
+
+    private void validateDuplicateAssociation(CreateAssociationDto createAssociationDto) {
+        boolean exists = associationRepository.existsByName(createAssociationDto.getAssociationName());
+        if (exists)
+            throw new IllegalStateException("이미 존재하는 association 입니다.");
     }
 
     //쿼리 포함하는 문자열 기준

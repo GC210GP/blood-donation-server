@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
-    private final PostViewService postViewService;
 
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, UriComponentsBuilder b) {
