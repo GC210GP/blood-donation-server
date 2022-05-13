@@ -16,7 +16,7 @@ public class PostRequestDto {
 
     private Long associationId;
 
-    public Post toEntityExceptUser(PostRequestDto postRequestDto){
+    public Post toEntityExceptUserAndAssociation(PostRequestDto postRequestDto){
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())

@@ -1,5 +1,6 @@
 package com.gachonsw.blooddonation.repository;
 
+import com.gachonsw.blooddonation.entity.Association;
 import com.gachonsw.blooddonation.entity.User;
 import com.gachonsw.blooddonation.entity.UserAssociation;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -15,4 +16,6 @@ public interface UserAssociationRepository extends JpaRepository<UserAssociation
 
     @EntityGraph(attributePaths = "association")
     Optional<UserAssociation> findWithAssociationById(Long id);
+
+    boolean existsByUserAndAssociation(User user, Association association);
 }

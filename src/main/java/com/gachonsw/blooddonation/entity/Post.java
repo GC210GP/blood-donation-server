@@ -21,6 +21,10 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "association_id")
+    private Association association;
+
     private String title;
     private String content;
     private Boolean isActiveGiver;
@@ -28,6 +32,9 @@ public class Post extends BaseTimeEntity {
 
     public void changeUser(User user){
         this.user = user;
+    }
+    public void changeAssociation(Association association){
+        this.association = association;
     }
 
     public void update(PostRequestDto postRequestDto) {

@@ -22,43 +22,22 @@ public class PostService {
     private final UserAssociationRepository userAssociationRepository;
 
     private final UserService userService;
-    private final PostAssociationService postAssoService;
     private final AssociationService associationService;
 
     @Transactional
     public Long createPost(PostRequestDto postRequestDto){
-        Post post = postRequestDto.toEntityExceptUser(postRequestDto);
+        Post post = postRequestDto.toEntityExceptUserAndAssociation(postRequestDto);
+
         User user = userService.findUserFromToken();
         post.changeUser(user);
-        postRepository.save(post);
 
-//        createPostAssociations(post,user);
-        createPostAssociation(post, postRequestDto.getAssociationId());
+        Association association = associationService.findById(postRequestDto.getAssociationId());
+        post.changeAssociation(association);
+
+        postRepository.save(post);
 
         return post.getId();
     }
-
-    private void createPostAssociation(Post post, Long associationId) {
-        Association association = associationService.findById(associationId);
-
-        PostAssociation pa = PostAssociation.builder()
-                .post(post)
-                .association(association)
-                .build();
-
-        postAssoService.createPostAssociation(pa);
-    }
-
-//    private void createPostAssociations(Post post, User user) {
-//        List<UserAssociation> listByUserId = userAssociationRepository.findListWithAssociationByUser(user);
-//        for (UserAssociation ua : listByUserId) {
-//            PostAssociation pa = PostAssociation.builder()
-//                    .post(post)
-//                    .association(ua.getAssociation())
-//                    .build();
-//            postAssoService.createPostAssociation(pa);
-//        }
-//    }
 
     @Transactional
     public void updatePost(Long postId, PostRequestDto postRequestDto){
@@ -69,8 +48,6 @@ public class PostService {
     @Transactional
     public void deletePostAndRelated(Long postId){
         Post post = findById(postId);
-//        postAssoService.deleteAllByPost(post);
-        postAssoService.deleteByPost(post);
         postRepository.delete(post);
     }
 
@@ -86,11 +63,15 @@ public class PostService {
     //paging
     public Slice<Post> findSliceWithPostByAssociation(Long associationId, Pageable pageable) {
         Association association = associationService.findById(associationId);
-        return postAssoService.findSliceWithPostByAssociation(association, pageable).map(PostAssociation::getPost);
+
+        return postRepository.findSliceByAssociation(association);
+//        return postAssoService.findSliceWithPostByAssociation(association, pageable).map(PostAssociation::getPost);
     }
 
     public List<Post> findListByUser(){
         User user = userService.findUserFromToken();
         return postRepository.findListByUser(user);
     }
+
+
 }

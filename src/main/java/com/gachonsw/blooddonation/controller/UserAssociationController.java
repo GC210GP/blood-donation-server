@@ -7,6 +7,8 @@ import com.gachonsw.blooddonation.service.UserAssociationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,9 +21,14 @@ public class UserAssociationController {
     private final UserAssociationService userAssociationService;
 
     @PostMapping
-    public ResponseEntity<?> createUserAssociation(@RequestBody CreateUserAssociationDto createUserAssociationDto) {
-        userAssociationService.createUserAssociation(createUserAssociationDto);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<UserAssociationDto> createUserAssociation(@RequestBody CreateUserAssociationDto createUserAssociationDto, UriComponentsBuilder b) {
+        Long userAssociationId = userAssociationService.createUserAssociation(createUserAssociationDto);
+
+        UriComponents uriComponents =
+                b.path("/user-associations/{userAssociationId}").buildAndExpand(userAssociationId);
+
+        UserAssociationDto res = new UserAssociationDto(userAssociationService.findById(userAssociationId));
+        return ResponseEntity.created(uriComponents.toUri()).body(res);
     }
 
 

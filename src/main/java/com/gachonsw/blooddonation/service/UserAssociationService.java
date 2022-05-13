@@ -2,7 +2,6 @@ package com.gachonsw.blooddonation.service;
 
 import com.gachonsw.blooddonation.dto.CreateUserAssociationDto;
 import com.gachonsw.blooddonation.entity.*;
-import com.gachonsw.blooddonation.repository.PostAssociationRepository;
 import com.gachonsw.blooddonation.repository.PostRepository;
 import com.gachonsw.blooddonation.repository.UserAssociationRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ public class UserAssociationService {
 
     private final UserAssociationRepository userAssociationRepository;
     private final PostRepository postRepository;
-    private final PostAssociationRepository postAssociationRepository;
 
     private final AssociationService assoService;
     private final UserService userService;
@@ -29,6 +27,8 @@ public class UserAssociationService {
     public Long createUserAssociation(CreateUserAssociationDto createUserAssociationDto){
         User user = userService.findUserFromToken();
         Association association = assoService.findById(createUserAssociationDto.getAssociationId());
+
+        validateDuplicateUA(user, association);
 
         UserAssociation userAssociation = UserAssociation.builder()
                 .user(user)
@@ -41,6 +41,13 @@ public class UserAssociationService {
         return result.getId();
     }
 
+    private void validateDuplicateUA(User user, Association association) {
+        boolean exists = existsByUserAndAssociation(user, association);
+        if(exists){
+            throw new IllegalStateException("이미 가입한 association 입니다.");
+        }
+    }
+
 //    private void createPostAssociations(Association association, User user) {
 //        List<Post> postList = postRepository.findListByUser(user);
 //        for (Post post : postList){
@@ -51,6 +58,10 @@ public class UserAssociationService {
 //            postAssociationRepository.save(pa);
 //        }
 //    }
+
+    public boolean existsByUserAndAssociation(User user ,Association association){
+        return userAssociationRepository.existsByUserAndAssociation(user, association);
+    }
 
     public UserAssociation findWithAssociationById(Long userAssociationId){
         return userAssociationRepository.findWithAssociationById(userAssociationId)
@@ -88,18 +99,8 @@ public class UserAssociationService {
         UserAssociation ua = findById(userAssociationId);
         userAssociationRepository.delete(ua);
 
-        deletePostAssociations(ua);
-
+        postRepository.deleteAllByAssociation(ua.getAssociation());
 
     }
-
-    private void deletePostAssociations(UserAssociation ua) {
-        User user = userService.findUserFromToken();
-        List<Post> postList = postRepository.findListByUser(user);
-        for(Post post : postList){
-            postAssociationRepository.deleteByPostAndAssociation(post, ua.getAssociation());
-        }
-    }
-
 
 }
