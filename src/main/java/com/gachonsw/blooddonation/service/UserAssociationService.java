@@ -99,8 +99,7 @@ public class UserAssociationService {
         UserAssociation ua = findById(userAssociationId);
         userAssociationRepository.delete(ua);
 
-        postRepository.deleteAllByAssociation(ua.getAssociation());
-
+//        postRepository.deleteAllByAssociation(ua.getAssociation());
     }
 
 }
