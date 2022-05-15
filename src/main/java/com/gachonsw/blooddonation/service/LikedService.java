@@ -25,6 +25,8 @@ public class LikedService {
         User from = userService.findById(createLikeDto.getUserIdFrom());
         User to = userService.findById(createLikeDto.getUserIdTo());
 
+        validateDuplicateLiked(from, to);
+
         Liked liked = Liked.builder()
                 .fromUser(from)
                 .toUser(to)
@@ -34,8 +36,16 @@ public class LikedService {
         return liked.getId();
     }
 
+    private void validateDuplicateLiked(User from, User to) {
+        boolean present = findListByUserId(from.getId()).stream()
+                .anyMatch(liked -> liked.getToUser().getId().equals(to.getId()));
+
+        if (present)
+            throw new IllegalStateException("이미 등록된 Liked 입니다.");
+    }
+
     public Liked findById(Long likeId){
-        return likedRepository.findById(likeId).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 Like입니다."));
+        return likedRepository.findById(likeId).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 Liked."));
     }
 
     @Transactional
@@ -44,7 +54,7 @@ public class LikedService {
         likedRepository.delete(liked);
     }
 
-    public List<Liked> findListByUser(Long userId) {
+    public List<Liked> findListByUserId(Long userId) {
         User user = userService.findById(userId);
         return likedRepository.findByFromUser(user);
     }

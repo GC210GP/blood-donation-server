@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,7 @@ public class FlaskRelayService {
         //http body - object - object mapper -> json - > http body json
 
         Long userId = userService.findUserFromToken().getId();
-        List<Long> likedList = likedService.findListByUser(userId).stream()
+        List<Long> likedList = likedService.findListByUserId(userId).stream()
                 .map(m -> m.getToUser().getId())
                 .collect(Collectors.toList());
 

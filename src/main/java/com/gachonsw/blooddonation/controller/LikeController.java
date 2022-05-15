@@ -46,7 +46,7 @@ public class LikeController {
 
     @GetMapping("/users/{userId}/likes")
     public Result<UserLikedResponseDto> getUserLikeList(@PathVariable Long userId){
-        List<Liked> likedList = likedService.findListByUser(userId);
+        List<Liked> likedList = likedService.findListByUserId(userId);
         UserLikedResponseDto res = new UserLikedResponseDto(likedList);
 
 //        List<LikeResponseDto> res = likeService.findListByUser(userId).stream()
