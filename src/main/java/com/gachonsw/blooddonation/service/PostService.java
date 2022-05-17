@@ -64,7 +64,7 @@ public class PostService {
     public Slice<Post> findSliceWithPostByAssociation(Long associationId, Pageable pageable) {
         Association association = associationService.findById(associationId);
 
-        return postRepository.findSliceByAssociation(association);
+        return postRepository.findSliceWithAssociationByAssociation(association, pageable);
 //        return postAssoService.findSliceWithPostByAssociation(association, pageable).map(PostAssociation::getPost);
     }
 
