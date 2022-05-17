@@ -49,7 +49,7 @@ public class PostController {
 //                .map(PostResponseDto::new)
 //                .collect(Collectors.toList());
 
-        List<PostAndAssociationDto> res = postService.findListByUser().stream()
+        List<PostAndAssociationDto> res = postService.findListByUser(userId).stream()
                 .map(p -> new PostAndAssociationDto(
                         new AssociationResponseDto(p.getAssociation()), new PostResponseDto(p)
                 ))

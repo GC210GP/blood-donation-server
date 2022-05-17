@@ -68,8 +68,8 @@ public class PostService {
 //        return postAssoService.findSliceWithPostByAssociation(association, pageable).map(PostAssociation::getPost);
     }
 
-    public List<Post> findListByUser(){
-        User user = userService.findUserFromToken();
+    public List<Post> findListByUser(Long userId){
+        User user = userService.findById(userId);
         return postRepository.findListByUser(user);
     }
 
