@@ -1,7 +1,7 @@
 package com.gachonsw.blooddonation.service;
 
+import com.gachonsw.blooddonation.dto.RecommendRequestDto;
 import com.gachonsw.blooddonation.dto.RecommendResponseDto;
-import com.gachonsw.blooddonation.dto.TrainDataDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FlaskRelayService {
 
-    private final UserService userService;
-    private final LikedService likedService;
+//    private final UserService userService;
+//    private final LikedService likedService;
 
     private final static String URI = "http://blood-donation-recommend.eba-tu8iiqus.ap-northeast-2.elasticbeanstalk.com";
 
@@ -51,44 +51,30 @@ public class FlaskRelayService {
 //        return result;
 //    }
 
-    public RecommendResponseDto trainUserAndRecommend() {
-        //http://localhost:9090/api/server/user/{userId}/name/{username}
+    public RecommendResponseDto trainUserAndRecommend(RecommendRequestDto recommendRequestDto) {
 
         URI uri = UriComponentsBuilder
                 .fromUriString(URI)
                 .path("/recommend")
                 .encode()
                 .build()
-                //pathVariable사용을 위한 메소드 순서대로 들어간다.
                 .toUri();
 
-        System.out.println(uri);
-
-        //아래 순서로 변환
-        //http body - object - object mapper -> json - > http body json
-
-        Long userId = userService.findUserFromToken().getId();
-        List<Long> likedList = likedService.findListByUserId(userId).stream()
-                .map(m -> m.getToUser().getId())
-                .collect(Collectors.toList());
-
-        TrainDataDto req = new TrainDataDto(userId, likedList);
-
         RestTemplate restTemplate = new RestTemplate();
-
         //파라미터 1 요청 주소 , 2 요청 바디 , 3 응답 바디
-        //3번째 파라미터 수정
-        ResponseEntity<RecommendResponseDto> response = restTemplate.postForEntity(uri, req, RecommendResponseDto.class);
+        ResponseEntity<RecommendResponseDto> response = restTemplate.postForEntity(uri, recommendRequestDto, RecommendResponseDto.class);
 
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getHeaders());
-        System.out.println(response.getBody());
+
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//        System.out.println(response.getStatusCode());
+//        System.out.println(response.getHeaders());
+//        System.out.println(response.getBody());
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         return response.getBody();
     }
 
     public ResponseEntity<?> updateModel() {
-        //http://localhost:9090/api/server/user/{userId}/name/{username}
 
         URI uri = UriComponentsBuilder
                 .fromUriString(URI)

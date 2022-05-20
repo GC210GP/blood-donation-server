@@ -1,8 +1,8 @@
 package com.gachonsw.blooddonation.controller;
 
+import com.gachonsw.blooddonation.dto.RecommendRequestDto;
 import com.gachonsw.blooddonation.dto.RecommendResponseDto;
 import com.gachonsw.blooddonation.service.FlaskRelayService;
-import com.gachonsw.blooddonation.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ public class RecommendController {
 
     //유저 트레이닝 하고 추천 결과 리턴
     @PostMapping
-    public ResponseEntity<?> trainUserAndRecommend(){
-        RecommendResponseDto res = flaskRelayService.trainUserAndRecommend();
+    public ResponseEntity<?> trainUserAndRecommend(@RequestBody RecommendRequestDto recommendRequestDto){
+        RecommendResponseDto res = flaskRelayService.trainUserAndRecommend(recommendRequestDto);
         return ResponseEntity.ok().body(res);
     }
 

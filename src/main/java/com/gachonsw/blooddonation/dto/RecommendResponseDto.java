@@ -8,5 +8,7 @@ import java.util.List;
 @Data
 public class RecommendResponseDto {
 
-    private List<String> result = new ArrayList<>();
+    private List<Long> result_id;
+    private List<Double> weight;
+
 }
