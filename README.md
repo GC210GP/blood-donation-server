@@ -1,11 +1,14 @@
 <p align="left">
-    <div align="center"><img src="https://github.com/GC210GP/wiki-212/raw/master/presentations/logo.png" width="700px"></div>
+    <div align="center"><img src="[https://github.com/GC210GP/wiki-212/raw/master/presentations/logo.png](https://avatars.githubusercontent.com/u/80944122?s=200&v=4)" width="700px"></div>
   <br>
 </p>
 
 <p align="center">"Make new connection through donation"<br> 지정헌혈 어플 <Double D> 의 서버입니다</p>
 
 <br>
+    
+    
+서비스 설명: https://vivid-silicon-11a.notion.site/Double-D-f641d66cb0094b72b946713d30dd489d
 
 ### 서버 구조도
 <p align="center">
