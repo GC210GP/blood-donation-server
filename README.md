@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">"Make new connection through donation"<br> 지정헌혈 어플 <Double D> 의 서버입니다</p>
-<p align="center">아직 개발 진행중입니다!</p>
+
 <br>
 
 ### 서버 구조도
@@ -46,7 +46,6 @@
 
 ### UI
 
-* 아직 개발/프로토타입 단계입니다.
 * UI 2/3 가량 Figma에서 발췌
 
 <p align="center">
