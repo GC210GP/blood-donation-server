@@ -1,5 +1,5 @@
 <p align="left">
-    <div align="center"><img src="[https://github.com/GC210GP/wiki-212/raw/master/presentations/logo.png](https://avatars.githubusercontent.com/u/80944122?s=200&v=4)" width="700px"></div>
+    <div align="center"><img src="https://github.com/GC210GP/wiki-212/raw/master/presentations/logo.png" width="700px"></div>
   <br>
 </p>
 
